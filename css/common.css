@@ -1,0 +1,136 @@
+.title, .subtitle {
+  text-align: center;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.title a {
+  text-decoration: none;
+  color: #666;
+}
+
+.header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.subheader {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+.description + .description {
+  margin-top: 1rem;
+}
+
+.pageLinks {
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 1.3rem;
+}
+
+.pageLink {
+  color: blue;
+  cursor: pointer;
+}
+
+.pageLink.current {
+  text-decoration: underline;
+}
+
+.location {
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.spacer {
+  height: 2rem;
+}
+
+/* override jQuery style to make active item in autocomplete menu easier to see */
+.ui-autocomplete div.ui-state-active {
+  background: lightyellow !important;
+}
+
+button {
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.form {
+  display: table;
+  border-collapse: collapse;
+  padding: 0;
+  margin: 0;
+}
+
+.form > li {
+  display: table-row;
+}
+
+.form > li > div {
+  display: table-cell;
+  padding-bottom: 0.5rem;
+  padding-right: 1rem;
+}
+
+.form > li > div.note {
+  padding-left: 5rem;
+}
+
+input[type="text"] {
+  width: 20rem;
+}
+
+input[type="text"].number {
+  width: 2rem;
+}
+
+label + input {
+  margin-left: .5rem;
+}
+
+input.invalid {
+  border: 1px red solid;
+}
+
+#score, .dataCell {
+  width: 6rem;
+}
+
+.playerName {
+  margin-left: 1rem;
+}
+
+.dataHeader {
+  display: inline-block;
+  margin-bottom: 1rem;
+  text-decoration: underline;
+  margin-right: -4px; # not sure why, but headers wind up with space between them - get rid of it
+}
+
+.dataCell {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+#playerDataHeader {
+  list-style-type: none;
+}
+
+.loginTarget {
+  font-weight: bold;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.loginError {
+  color: red;
+  text-align: center;
+}
