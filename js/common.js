@@ -20,7 +20,8 @@ const DIV_NAME = {
     'WGM': 'Women Grand Master',
     'WSGM': 'Women Senior Grand Master',
     'WL': 'Women Legend',
-    'WJ': 'Women Junior'
+    'WJ': 'Women Junior',
+    'MX': 'Mixed'
 };
 
 // order to present divisions in
@@ -412,6 +413,20 @@ function showLogin() {
 function doLogin(targetUrl) {
 
     $('#loginForm').submit();
+}
+
+function getLinkBar(links, useAnchors) {
+
+    let html = '<div class="pageLinks">';
+    if (useAnchors) {
+	links.forEach(link => html += '[ <a class="pageLink" href="#' + link.id + '">' + link.text + '</a> ]');
+    }
+    else {
+	links.forEach(link => html += '[ <span class="pageLink" id="' + link.id + '">' + link.text + '</span> ]');
+    }
+    html += '</div>';
+
+    return html;
 }
 
 /**
