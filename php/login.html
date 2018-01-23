@@ -1,0 +1,48 @@
+<?php
+#-----------------------------------------------------------------------------#
+# File: login.html
+# Author: Conrad Damon
+# Date: 02/26/2017
+#
+# Display a login form. Intended use is as an included PHP file rather than a
+# standalone page.
+#-----------------------------------------------------------------------------#
+
+require_once('db.php');
+require_once('log.php');
+require_once('util.php');
+
+echo <<< EOF
+<html>
+  <head>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="/js/common.js"></script>
+    <script>
+      function launch() {
+          showLogin();
+      }
+    </script>
+    <title>Authentication Required</title>
+  </head>
+  <body onload="launch();">
+    <div id="loginDialog" title="Authentication Required">
+      <form id="loginForm" method="post">
+	<div>Authentication is required to perform administrative functions. Please enter the password for:</div>
+	<div class="loginTarget">$loginTarget</div>
+	<ul class="form">
+	  <li>
+	    <div><label for="password">Password:</label></div>
+	    <div><input type="password" id="password" name="password" tabIndex=0 /></div>
+	    <div><button type="submit" id="loginButton">Sign In</button></div>
+	  </li>
+	</ul>
+      </form>
+      <div class="loginError">$loginError</div>
+    </div>
+  </body>
+</html>
+EOF;
+?>
