@@ -25,7 +25,7 @@ const DIV_NAME = {
 };
 
 // order to present divisions in
-const DIV_ORDER = [ 'O', 'OM', 'OGM', 'OSGM', 'OL', 'OJ', 'W', 'WM', 'WGM', 'WSGM', 'WL', 'WJ' ];
+const DIV_ORDER = [ 'O', 'OM', 'OGM', 'OSGM', 'OL', 'OJ', 'W', 'WM', 'WGM', 'WSGM', 'WL', 'WJ', 'MX' ];
 
 /**
  * Removes an item from an array.
@@ -146,7 +146,13 @@ function sendRequest(op, args, callback) {
     var success;
     if (typeof callback == 'function') {
 	success = function(result) {
-	    callback(result ? JSON.parse(result) : null);
+	    var returnValue = null;
+	    try {
+		returnValue = JSON.parse(result);
+	    } catch (e) {
+		console.log(e);
+	    }
+	    callback(returnValue);
 	}
     }
 
@@ -168,8 +174,15 @@ function sendRequests(requests, callbacks) {
     return $.when(...requests).done(function(...results) {
 	    results.forEach(function(result, index) {
 		    if (typeof callbacks[index] == 'function') {
-			var res = $.isArray(result) ? result[0] : result;
-			callbacks[index](res != null ? JSON.parse(res) : null);
+			var res = $.isArray(result) ? result[0] : result,
+			    returnValue = null;
+
+			try {
+			    returnValue = JSON.parse(res);
+			} catch (e) {
+			    console.log(e);
+			}
+			callbacks[index](returnValue);
 		    }
 		});
 	});
