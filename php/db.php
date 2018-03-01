@@ -24,7 +24,7 @@ function db_connect($dbname='db') {
 	return $db;
     }
     $dsn = $conf[$dbname]['dsn'];
-    $persist = $conf[$dbname]['persist'] ? TRUE : FALSE;
+    $persist = $conf[$dbname]['persistent'] ? TRUE : FALSE;
     $db = DB::connect($dsn, $persist);
     if (DB::iserror($db)) {
 	elog(LOG_ERR, "Error connecting to $dsn: " . $db->getMessage());
@@ -68,9 +68,10 @@ function db_query($sql, $options='') {
 
   global $conf, $_db, $dbname, $db_no_writes;
 
-  if ($dbname == 'dgw_db' || $dbname == 'overall_db' || $dbname == 'ddc_db') {
+  if ($dbname === 'dgw_db' || $dbname === 'overall_db' || $dbname === 'ddc_db') {
     elog(LOG_INFO, $sql);
-    if ($db_no_writes == $dbname && !preg_match('/^\s*SELECT\s+/i', $sql)) {
+    if (false && $db_no_writes === $dbname && !preg_match('/^\s*SELECT\s+/i', $sql)) {
+      elog(LOG_INFO, "***** writes disabled for $dbname");
       $msg =  'db writes disabled';
       return $one ? $msg : array($msg);
     }
@@ -137,5 +138,14 @@ function db_quote($value) {
 
 #    return str_replace("'", "''", $value);
     return $_db->quote($value);
+}
+
+# Convert data to UTF8 so that json_encode() doesn't choke on it
+function as_utf8($value) {
+
+  if (is_array($value)) {
+    return (array_map('as_utf8', $value));
+  }
+  return utf8_encode((string) $value);
 }
 ?>
