@@ -25,12 +25,12 @@
 
 # levels through LOG_DEBUG are already defined by the OS and can't 
 # be changed. That's okay because order matters, numbers don't.
-define('LOG_ERR', 3);
-define('LOG_WARNING', 4);
-define('LOG_INFO', 6);
-define('LOG_DEBUG', 7);
-define('LOG_DEBUG1', 8);
-define('LOG_DEBUG2', 9);
+if (!defined('LOG_ERR')) define('LOG_ERR', 3);
+if (!defined('LOG_WARNING')) define('LOG_WARNING', 4);
+if (!defined('LOG_INFO')) define('LOG_INFO', 6);
+if (!defined('LOG_DEBUG')) define('LOG_DEBUG', 7);
+if (!defined('LOG_DEBUG1')) define('LOG_DEBUG1', 7);
+if (!defined('LOG_DEBUG2')) define('LOG_DEBUG2', 9);
 
 # labels for the log levels
 $log_level[LOG_ERR] = 'error';

@@ -134,3 +134,7 @@ input.invalid {
   color: red;
   text-align: center;
 }
+
+.disabled {
+    opacity: 0.5;
+}

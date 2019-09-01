@@ -25,11 +25,11 @@ function getTournamentHeader($tournamentId) {
   $start = date("F j", strtotime($data['start']));
   $end = date("F j", strtotime($data['end']));
   $location .= $start != $end ? ", $start - $end" : ", $start";
-  $url = $data['url'];
+  $url = isset($data['url']) ? $data['url'] : '';
   if ($url) {
     $title = "<a href='$url'>$title</a>";
   }
-  $note = $data['note'];
+  $note = isset($data['note']) ? $data['note'] : '';
 
   return "<div class='title'>$title</div><div class='location'>$location</div><div class='tournamentNote'>$note</div>";
 }

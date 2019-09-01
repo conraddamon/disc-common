@@ -136,16 +136,15 @@ function db_quote($value) {
 
     global $_db;
 
-#    return str_replace("'", "''", $value);
     return $_db->quote($value);
 }
 
 # Convert data to UTF8 so that json_encode() doesn't choke on it
-function as_utf8($value) {
+function db_encode($value) {
 
   if (is_array($value)) {
-    return (array_map('as_utf8', $value));
+    return (array_map('db_encode', $value));
   }
-  return utf8_encode((string) $value);
+  return mb_check_encoding($value,"UTF-8") == true ? $value : utf8_encode((string) $value);
 }
 ?>
