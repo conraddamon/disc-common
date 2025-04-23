@@ -89,6 +89,20 @@ function toMysqlDate(date) {
     return [year, month, day].join('-');
 }
 
+function cleanArgs(args) {
+
+    args = args || {};
+    const newArgs = {};
+    Object.keys(args).forEach(key => {
+	    const value = args[key];
+	    if (value !== undefined) {
+		newArgs[key] = value;
+	    }
+	});
+
+    return newArgs;
+}
+
 /**
  * Performs an operation on the back end.
  *
@@ -103,7 +117,7 @@ function sendMessage(op, callback, args) {
     var m = location.pathname.match(/^\/(\w+)/),
 	app = m && m[1];
 
-    args = args || {};
+    args = cleanArgs(args);
     args.op = op;
 
     $.ajax({
@@ -132,6 +146,7 @@ function sendRequest(op, args, callback) {
 
     var m = location.pathname.match(/^\/(\w+)/),
 	app = m && m[1];
+    const qs = parseQueryString();
 
     if (location.hostname === 'doubledisccourt.com') {
 	app = 'ddc';
@@ -139,9 +154,18 @@ function sendRequest(op, args, callback) {
     else if (location.hostname === 'overalldisc.com') {
 	app = 'overall';
     }
+    else if (location.hostname === 'netfrolic.com') {
+	app = 'jumbalaya';
+    }
 
-    args = args || {};
+    args = cleanArgs(args);
     args.op = op;
+    if (qs.test) {
+	args.test = true;
+    }
+    if (qs.log) {
+	args.log = true;
+    }
 
     var success;
     if (typeof callback == 'function') {
@@ -159,34 +183,41 @@ function sendRequest(op, args, callback) {
     return $.get("/data/" + app + ".php", args, success);
 }
 
+const DOMAIN_APP = {
+    'doubledisccourt.com': 'ddc',
+    'overalldisc.com': 'overall',
+    'netfrolic.com': 'jumbalaya',
+};
+
 /**
- * Sends a request to the server and optionally calls a callback with the results. If a callback
- * is not provided, this function returns a jQuery Deferred object which can be handed to various
- * promise-like functions.
+ * Sends an async request to the server. Calling functions should declare themselves async and
+ * await the response.
  *
  * @param {string}   op        operation to perform     
  * @param {object}   args      (optional) arguments for op
- * @param {function} callback  (optional) function to call when response comes
  *
- * @return a jQuery Deferred object
+ * @return {any} parsed data
  */
-async function sendRequestAsync(op, args, callback) {
+async function sendRequestAsync(op, args) {
 
-    var m = location.pathname.match(/^\/(\w+)/),
-	app = m && m[1];
+    const m = location.pathname.match(/^\/(\w+)/);
+    const app = DOMAIN_APP[location.hostname] || (m && m[1]);
+    const qs = parseQueryString();
 
-    if (location.hostname === 'doubledisccourt.com') {
-	app = 'ddc';
-    }
-    else if (location.hostname === 'overalldisc.com') {
-	app = 'overall';
-    }
-
-    args = args || {};
+    args = cleanArgs(args);
     args.op = op;
+    if (qs.test) {
+	args.test = true;
+    }
+    if (qs.log) {
+	args.log = true;
+    }
 
-    const data = await $.get("/data/" + app + ".php", args);
-    return JSON.parse(data);
+    if (app && op) {
+	const data = await $.get("/data/" + app + ".php", args);
+	return JSON.parse(data);
+    }
+    return null;
 }
 
 /**
@@ -228,8 +259,8 @@ function capitalize(str) {
     str = str || '';
     var words = str.split(/\s+/);
     return words.map(function(w) {
-	    return w.charAt(0).toUpperCase() + w.substr(1).toLowerCase();
-	}).join(' ');
+	return w.charAt(0).toUpperCase() + w.substr(1).toLowerCase();
+    }).join(' ');
 }
 
 /**

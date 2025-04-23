@@ -1,5 +1,22 @@
 <?php
 
+require_once('log.php');
+
+function is_present($param) {
+  $value = get_input($param, 'get');
+  return isset($value);
+}
+
+// help pass along certain args in a URL
+function propagate_params($first = false, $params = array('test', 'log')) {
+  $present = array_filter($params, 'is_present');
+  $start = $first ? '?' : '&';
+  if (count($present) > 0) {
+    return $start . implode('&', $present);
+  }
+  return '';
+}
+
 function is_valid_email($email) {
   return preg_match('/^[!-;A-Z_a-~]+\@([0-9a-z][\w\-]+\.)+[a-z]{2,6}$/', $email);
 }
@@ -17,7 +34,7 @@ function formatDate($date) {
 
 // puts text in single quotes
 function quote($text) {
-  return $text === '' ? "''" : "'" . $text . "'";
+  return $text === '' ? "''" : "\"" . $text . "\"";
 }
 
 function array_union($a, $b) {

@@ -12,6 +12,16 @@ function getTournamentTitle($tournamentId) {
   return $year . ' ' . $data['name'];
 }
 
+function getSeriesTitle($seriesId) {
+
+  $data = is_array($seriesId) ? $seriesId : null;
+  if (!$data) {
+    $sql = "SELECT * FROM series WHERE id=$seriesId";
+    $data = db_query($sql, 'one');
+  }
+  return $data['name'];
+}
+
 # returns a header with centered text showing tournament info
 function getTournamentHeader($tournamentId) {
 
@@ -34,4 +44,21 @@ function getTournamentHeader($tournamentId) {
   return "<div class='title'>$title</div><div class='location'>$location</div><div class='tournamentNote'>$note</div>";
 }
 
+# returns a header with centered text showing series info
+function getSeriesHeader($seriesId) {
+
+  $data = is_array($seriesId) ? $seriesId : null;
+  if (!$data) {
+    $sql = "SELECT * FROM series WHERE id=$seriesId";
+    $data = db_query($sql, 'one');
+  }
+  $title = getSeriesTitle($data);
+  $url = isset($data['url']) ? $data['url'] : '';
+  if ($url) {
+    $title = "<a href='$url'>$title</a>";
+  }
+  $note = isset($data['note']) ? $data['note'] : '';
+
+  return "<div class='title'>$title</div><div class='tournamentNote'>$note</div>";
+}
 ?>
